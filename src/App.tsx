@@ -1,23 +1,32 @@
-import { BrowserRouter, Link } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 
 import { Router } from "@app/Router";
-import { routes } from "@app/Router/routes";
+import { AuthProvider } from "@app/contexts/AuthContext";
 import { ThemeProvider } from "@app/contexts/ThemeContext";
-import { ThemeSwitcher } from "@views/components/ThemeSwitcher";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <BrowserRouter>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <header className="border-b p-6 mb-10 space-x-6">
-          <Link to='/'>Home</Link>
-          <Link to={routes.createUser}>Criar usuário</Link>
-        </header>
-
-        <ThemeSwitcher />
-        <Router />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router />
+          <Toaster />
+        </AuthProvider>
       </ThemeProvider>
-    </BrowserRouter>
+
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   )
 }
 

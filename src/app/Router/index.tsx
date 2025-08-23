@@ -1,19 +1,36 @@
 import { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { lazyLoad } from "@app/utils/lazyLoad";
+import { DefaultLayout } from "@views/layouts/DefaultLayout";
+import { AuthGuard } from "./AuthGuard";
 import { routes } from "./routes";
 
 const { Home } = lazyLoad(() => import('@views/pages/Home'))
-const { CreateUser } = lazyLoad(() => import('@views/pages/CreateUser'))
+const { Login } = lazyLoad(() => import('@views/pages/Login'))
+const { Register } = lazyLoad(() => import('@views/pages/Register'))
 
 export function Router() {
   return (
-    <Suspense fallback={<div className="w-10 h-10 rounded-full border-4 border-r-white animate-spin" />}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path={routes.createUser} element={<CreateUser />} />
-      </Routes>
-    </Suspense>
+    <BrowserRouter>
+      <Suspense fallback={
+          <div className="flex items-center justify-center h-screen w-screen ">
+            <div className="w-10 h-10 rounded-full border-4 border-r-white animate-spin" />
+          </div>
+        }>
+        <Routes>
+          <Route element={<DefaultLayout />}>
+            <Route element={<AuthGuard isPrivate={false} />}>
+              <Route path={routes.login} element={<Login />} />
+              <Route path={routes.register} element={<Register />} />
+            </Route>
+
+            <Route element={<AuthGuard isPrivate />}>
+              <Route path={routes.home} element={<Home />} />
+            </Route>
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   )
 }
