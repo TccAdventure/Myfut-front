@@ -16,6 +16,11 @@ const schema = z.object({
   password: z.string()
     .nonempty('Senha é obrigatória')
     .min(8, 'Senha deve conter no mínimo 8 dígitos'),
+  role: z.boolean().default(false).transform((value) => (
+    value
+    ? 'COURT_ADMIN'
+    : 'USER'
+  )),
 });
 
 type FormData = z.infer<typeof schema>;

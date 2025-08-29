@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { Button } from "../../components/Button";
-import { Input } from "../../components/Input";
+import { Button } from "@views/components/Button";
+import { Input } from "@views/components/Input";
+import { Switch } from "@views/components/Switch";
 import { useRegisterController } from "./useRegisterController";
 
 export function Register() {
@@ -32,6 +33,11 @@ export function Register() {
         onSubmit={handleSubmit}
         className="mt-[60px] flex flex-col gap-4"
       >
+        <div className="flex items-center gap-2">
+          Sou administrador de quadra:
+          <Switch {...register("role")} />
+        </div>
+
         <Input
           placeholder="Nome"
           error={errors.name?.message}

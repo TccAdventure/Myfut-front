@@ -1,18 +1,19 @@
 import { PersonIcon } from "@radix-ui/react-icons";
 import { Button } from "@views/components/Button";
+import { Spinner } from "@views/components/Spinner";
 import { ChevronRight, PlusIcon } from "lucide-react";
-import { useHomeController } from "./useHomeController";
+import { useCourtAdminHomeController } from "./useCourtAdminHomeController";
 
-export function Home() {
-  const { courts, isFetching, isSuccess, handleLogout } = useHomeController();
+export function CourtAdminHome() {
+  const { courts, isFetching, isSuccess, handleLogout } = useCourtAdminHomeController();
 
-  // if (isFetching) {
-  //   return <Spinner className="flex self-center" />;
-  // }
+  if (isFetching) {
+    return <Spinner className="flex self-center" />;
+  }
 
-  // if (!isSuccess || !courts) {
-  //   return null;
-  // }
+  if (!isSuccess || !courts) {
+    return null;
+  }
 
   return (
     <div className="h-screen">
@@ -28,7 +29,7 @@ export function Home() {
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl my-4">Minhas quadras</h2>
 
-          {courts?.map((court) => (
+          {courts.map((court) => (
             <div key={court.id} className="border-2 border-primary/30 rounded-md p-4">
               <h2 className="text-2xl bold">{court.name}</h2>
 

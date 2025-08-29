@@ -7,6 +7,7 @@ import { AuthGuard } from "./AuthGuard";
 import { routes } from "./routes";
 
 const { Home } = lazyLoad(() => import('@views/pages/Home'))
+const { CourtAdminHome } = lazyLoad(() => import('@views/pages/CourtAdminHome'))
 const { Login } = lazyLoad(() => import('@views/pages/Login'))
 const { Register } = lazyLoad(() => import('@views/pages/Register'))
 
@@ -27,6 +28,7 @@ export function Router() {
 
             <Route element={<AuthGuard isPrivate />}>
               <Route path={routes.home} element={<Home />} />
+              <Route path={routes.courtAdminHome} element={<CourtAdminHome />} />
             </Route>
           </Route>
         </Routes>

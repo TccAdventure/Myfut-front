@@ -2,15 +2,14 @@ import { useAuth } from "@app/hooks/useAuth";
 import { courtAdminService } from "@app/services/courtAdminService";
 import { useQuery } from "@tanstack/react-query";
 
-export function useHomeController() {
+export function useCourtAdminHomeController() {
   const { signout } = useAuth();
 
   const { isError, isFetching, isSuccess, data } = useQuery({
-    // queryKey: ['court', 'getAll'],
-    queryFn: () => courtAdminService.getAll(),
-    staleTime: Infinity,
-    enabled: false,
-  });
+      queryKey: ['court', 'getAll'],
+      queryFn: () => courtAdminService.getAll(),
+      staleTime: Infinity,
+    });
 
   function handleLogout() {
     signout();
