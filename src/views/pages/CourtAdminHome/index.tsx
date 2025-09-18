@@ -1,7 +1,9 @@
 import { PersonIcon } from "@radix-ui/react-icons";
+import { ChevronRight } from "lucide-react";
+
 import { Button } from "@views/components/Button";
+import { FabButton } from "@views/components/FabButton";
 import { Spinner } from "@views/components/Spinner";
-import { ChevronRight, PlusIcon } from "lucide-react";
 import { useCourtAdminHomeController } from "./useCourtAdminHomeController";
 
 export function CourtAdminHome() {
@@ -43,14 +45,7 @@ export function CourtAdminHome() {
           ))}
         </div>
 
-        <div className="absolute right-4 bottom-4">
-          <button
-            className="flex items-center justify-center h-12 w-12 bg-primary rounded-full cursor-pointer"
-            onClick={handleCreateCourt}
-          >
-            <PlusIcon />
-          </button>
-        </div>
+        <FabButton onClick={handleCreateCourt} />
 
       </div>
     </div>
