@@ -9,7 +9,7 @@ import { authService } from "@app/services/authService";
 import type { SignupParams } from "@app/services/authService/signup";
 
 const schema = z.object({
-  name: z.string().nonempty('Nomel é obrigatório'),
+  name: z.string().nonempty('Nome é obrigatório'),
   email: z.string()
     .nonempty('E-mail é obrigatório')
     .email('Informe um e-mail válido'),

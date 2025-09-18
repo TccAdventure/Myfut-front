@@ -5,7 +5,7 @@ import { ChevronRight, PlusIcon } from "lucide-react";
 import { useCourtAdminHomeController } from "./useCourtAdminHomeController";
 
 export function CourtAdminHome() {
-  const { courts, isFetching, isSuccess, handleLogout } = useCourtAdminHomeController();
+  const { courts, isFetching, isSuccess, handleLogout, handleCreateCourt } = useCourtAdminHomeController();
 
   if (isFetching) {
     return <Spinner className="flex self-center" />;
@@ -44,7 +44,10 @@ export function CourtAdminHome() {
         </div>
 
         <div className="absolute right-4 bottom-4">
-          <button className="flex items-center justify-center h-12 w-12 bg-primary rounded-full cursor-pointer">
+          <button
+            className="flex items-center justify-center h-12 w-12 bg-primary rounded-full cursor-pointer"
+            onClick={handleCreateCourt}
+          >
             <PlusIcon />
           </button>
         </div>

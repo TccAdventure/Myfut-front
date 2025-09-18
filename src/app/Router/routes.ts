@@ -4,4 +4,5 @@ export const routes = {
   registerCourtAdmin: '/register-court-admin',
   home: '/',
   courtAdminHome: '/court-admin-home',
+  createCourt: '/create-court',
 }
