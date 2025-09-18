@@ -5,4 +5,5 @@ export const routes = {
   home: '/',
   courtAdminHome: '/court-admin-home',
   createCourt: '/create-court',
+  profile: '/profile',
 }

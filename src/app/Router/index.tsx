@@ -11,6 +11,7 @@ const { CourtAdminHome } = lazyLoad(() => import('@views/pages/CourtAdminHome'))
 const { Login } = lazyLoad(() => import('@views/pages/Login'))
 const { Register } = lazyLoad(() => import('@views/pages/Register'))
 const { CreateCourt } = lazyLoad(() => import('@views/pages/CreateCourt'))
+const { Profile } = lazyLoad(() => import('@views/pages/Profile'))
 
 export function Router() {
   return (
@@ -31,6 +32,7 @@ export function Router() {
               <Route path={routes.home} element={<Home />} />
               <Route path={routes.courtAdminHome} element={<CourtAdminHome />} />
               <Route path={routes.createCourt} element={<CreateCourt />} />
+              <Route path={routes.profile} element={<Profile />} />
             </Route>
           </Route>
         </Routes>

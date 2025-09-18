@@ -20,7 +20,7 @@ export function CreateCourt() {
       <div className="flex items-center gap-4">
         <GoBackButton onClick={goBack} />
 
-        <h1 className="text-2xl">Criar Quadra</h1>
+        <h1 className="text-2xl font-bold">Criar Quadra</h1>
       </div>
 
       <form
