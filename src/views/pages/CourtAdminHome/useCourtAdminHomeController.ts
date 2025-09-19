@@ -21,6 +21,10 @@ export function useCourtAdminHomeController() {
     navigate(routes.profile);
   }
 
+  function goToCourtDetails(courtId: string) {
+    navigate(`${routes.createCourt}/${courtId}`);
+  }
+
   return {
     courts: data,
     isFetching,
@@ -28,5 +32,6 @@ export function useCourtAdminHomeController() {
     isError,
     handleCreateCourt,
     goToProfile,
+    goToCourtDetails,
   }
 }

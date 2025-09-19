@@ -17,10 +17,10 @@ export function Router() {
   return (
     <BrowserRouter>
       <Suspense fallback={
-          <div className="flex items-center justify-center h-screen w-screen ">
-            <div className="w-10 h-10 rounded-full border-4 border-r-white animate-spin" />
-          </div>
-        }>
+        <div className="flex items-center justify-center h-screen w-screen ">
+          <div className="w-10 h-10 rounded-full border-4 border-r-white animate-spin" />
+        </div>
+      }>
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route element={<AuthGuard isPrivate={false} />}>
@@ -32,6 +32,7 @@ export function Router() {
               <Route path={routes.home} element={<Home />} />
               <Route path={routes.courtAdminHome} element={<CourtAdminHome />} />
               <Route path={routes.createCourt} element={<CreateCourt />} />
+              <Route path={`${routes.createCourt}/:courtId`} element={<CreateCourt />} />
               <Route path={routes.profile} element={<Profile />} />
             </Route>
           </Route>

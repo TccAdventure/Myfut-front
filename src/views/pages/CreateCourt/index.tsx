@@ -1,18 +1,18 @@
 import { Button } from "@views/components/Button";
+import { GoBackButton } from "@views/components/GoBackButton";
 import { Input } from "@views/components/Input";
 import { Switch } from "@views/components/Switch";
-
-import { GoBackButton } from "@views/components/GoBackButton";
 import { useCreateCourtController } from "./useCreateCourtController";
 
 export function CreateCourt() {
   const {
     register,
-    errors,
     handleSubmit,
-    isLoading,
     goBack,
+    errors,
+    isLoading,
     weekdays,
+    isEditing,
   } = useCreateCourtController();
 
   return (
@@ -20,7 +20,7 @@ export function CreateCourt() {
       <div className="flex items-center gap-4">
         <GoBackButton onClick={goBack} />
 
-        <h1 className="text-2xl font-bold">Criar Quadra</h1>
+        <h1 className="text-2xl font-bold">{isEditing ? 'Editar' : 'Criar'} Quadra</h1>
       </div>
 
       <form
@@ -39,7 +39,7 @@ export function CreateCourt() {
           {...register('description')}
         />
 
-        <h2>Endereço</h2>
+        <h2 className="text-xl font-bold">Endereço</h2>
 
         <Input
           placeholder="Cidade"
@@ -65,12 +65,12 @@ export function CreateCourt() {
           {...register('address.number')}
         />
 
-        <h2>Disponibilidade</h2>
+        <h2 className="text-xl font-bold">Disponibilidade</h2>
 
         {weekdays.map(({ weekday, name }) => (
           <div key={weekday} className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
-              <h3>{name}</h3>
+              <p className="font-bold">{name}</p>
               <Switch {...register(`availabilities.${weekday}.isActive`)} />
             </div>
 
@@ -87,7 +87,7 @@ export function CreateCourt() {
                 placeholder="Hora de início"
                 error={errors.availabilities?.[weekday]?.startTime?.message}
                 type="time"
-                defaultValue={"18:00"}
+                defaultValue={isEditing ? undefined : "18:00"}
                 {...register(`availabilities.${weekday}.startTime`)}
               />
 
@@ -95,7 +95,7 @@ export function CreateCourt() {
                 placeholder="Hora de fim"
                 error={errors.availabilities?.[weekday]?.endTime?.message}
                 type="time"
-                defaultValue={"22:00"}
+                defaultValue={isEditing ? undefined : "22:00"}
                 {...register(`availabilities.${weekday}.endTime`)}
               />
             </div>
@@ -103,7 +103,7 @@ export function CreateCourt() {
         ))}
 
         <Button type="submit" className="mt-2" isLoading={isLoading}>
-          Criar
+          {isEditing ? "Salvar" : "Criar"}
         </Button>
       </form>
     </div>

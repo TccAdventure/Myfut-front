@@ -12,6 +12,7 @@ export function CourtAdminHome() {
     isSuccess,
     handleCreateCourt,
     goToProfile,
+    goToCourtDetails,
   } = useCourtAdminHomeController();
 
   if (isFetching) {
@@ -38,14 +39,16 @@ export function CourtAdminHome() {
           <h2 className="text-3xl font-bold my-4">Minhas quadras</h2>
 
           {courts.map((court) => (
-            <div key={court.id} className="border-2 border-primary/30 rounded-md p-4">
+            <div
+              key={court.id}
+              className="border-2 border-primary/30 rounded-md p-4 cursor-pointer"
+              onClick={() => goToCourtDetails(court.id)}
+            >
               <h2 className="text-2xl bold">{court.name}</h2>
 
               <div className="flex justify-between mt-2">
                 <p>{court.description}</p>
-                <button className="cursor-pointer">
-                  <ChevronRight />
-                </button>
+                <ChevronRight />
               </div>
             </div>
           ))}

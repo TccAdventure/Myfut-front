@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 
 import { routes } from "@app/Router/routes";
@@ -43,29 +43,81 @@ const weekdays = [
 export function useCreateCourtController() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const params = useParams();
 
-  const {
-    handleSubmit: hookFormSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  })
+  const courtId = params?.courtId;
+  const isEditing = !!courtId;
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { data: detailsData } = useQuery({
+    queryKey: ["courts", courtId],
+    queryFn: async () => {
+      if (courtId) {
+        const data = await courtAdminService.getById(courtId);
+        reset(data);
+        return data;
+      }
+    },
+    enabled: isEditing,
+    staleTime: Infinity,
+  });
+
+  const { mutateAsync: createMutation, isPending: isCreateLoading } = useMutation({
     mutationFn: async (data: CreateCourtBody) => {
       return courtAdminService.create(data);
     }
   });
 
+  const { mutateAsync: updateMutation, isPending: isUpdateLoading } = useMutation({
+    mutationFn: async (data: CreateCourtBody) => {
+      return courtId && courtAdminService.update(courtId, data);
+    }
+  });
+
+  const {
+    handleSubmit: hookFormSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    values: {
+      name: detailsData?.name ?? "",
+      description: detailsData?.description ?? "",
+      address: {
+        country: detailsData?.courtAddress.country ?? "BR",
+        state: detailsData?.courtAddress.state ?? "SP",
+        city: detailsData?.courtAddress.city ?? "",
+        neighborhood: detailsData?.courtAddress.neighborhood ?? "",
+        street: detailsData?.courtAddress.street ?? "",
+        number: detailsData?.courtAddress.number ?? 0,
+      },
+      availabilities: detailsData?.courtAvailability?.map(({ weekday, startTime, endTime, isActive }) => ({
+        weekday,
+        startTime,
+        endTime,
+        isActive,
+      })) ?? [],
+    },
+  })
+
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      if (isEditing) {
+        await updateMutation(data);
+        queryClient.invalidateQueries({ queryKey: ['courts', courtId] });
+      } else {
+        await createMutation(data);
+      }
 
       queryClient.invalidateQueries({ queryKey: ['court', 'getAll'] });
-      navigate(routes.courtAdminHome, { replace: true });
+
+      toast.success(`Quadra ${isEditing ? "editada" : "criada"} com sucesso!`);
+
+      if (!isEditing) {
+        navigate(routes.courtAdminHome, { replace: true });
+      }
     } catch {
-      toast.error('Ocorreu um erro ao criar a sua quadra!');
+      toast.error(`Ocorreu um erro ao ${isEditing ? "editar" : "criar"} a sua quadra!`);
     }
   });
 
@@ -75,10 +127,12 @@ export function useCreateCourtController() {
 
   return {
     register,
-    errors,
     handleSubmit,
-    isLoading,
     goBack,
+    errors,
+    isLoading: isCreateLoading || isUpdateLoading,
     weekdays,
+    isEditing,
+    detailsData,
   }
 }
