@@ -38,6 +38,9 @@ export function CourtAdminHome() {
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl font-bold my-4">Minhas quadras</h2>
 
+          {courts.length === 0 && (
+            <h2 className="text-2xl bold">Você ainda não cadastrou nenhuma quadra!</h2>
+          )}
           {courts.map((court) => (
             <div
               key={court.id}
