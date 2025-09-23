@@ -39,6 +39,12 @@ export function CreateCourt() {
           {...register('description')}
         />
 
+        <Input
+          placeholder="Link do Google Maps"
+          error={errors.linkToGoogleMaps?.message}
+          {...register('linkToGoogleMaps')}
+        />
+
         <h2 className="text-xl font-bold">Endereço</h2>
 
         <Input

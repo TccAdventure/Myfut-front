@@ -5,8 +5,8 @@ export interface Court {
   userId: UUID;
   name: string;
   description: string;
-  imageUrl?: string | null;
-  linkToGoogleMaps?: string | null;
+  imageUrl?: string;
+  linkToGoogleMaps?: string;
 }
 
 export interface CourtDetails extends Court {

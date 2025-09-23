@@ -12,6 +12,7 @@ import type { CreateCourtBody } from "@app/services/courtAdminService/create";
 const schema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),
   description: z.string().nonempty('Descrição é obrigatória'),
+  linkToGoogleMaps: z.string(),
   address: z.object({
     country: z.string().default("BR"),
     state: z.string().default("SP"),
@@ -83,6 +84,7 @@ export function useCreateCourtController() {
     values: {
       name: detailsData?.name ?? "",
       description: detailsData?.description ?? "",
+      linkToGoogleMaps: detailsData?.linkToGoogleMaps ?? "",
       address: {
         country: detailsData?.courtAddress.country ?? "BR",
         state: detailsData?.courtAddress.state ?? "SP",
