@@ -89,7 +89,7 @@ export function useCreateCourtController() {
         city: detailsData?.courtAddress.city ?? "",
         neighborhood: detailsData?.courtAddress.neighborhood ?? "",
         street: detailsData?.courtAddress.street ?? "",
-        number: detailsData?.courtAddress.number ?? 0,
+        number: detailsData?.courtAddress.number ?? "" as unknown as number,
       },
       availabilities: detailsData?.courtAvailability?.map(({ weekday, startTime, endTime, isActive }) => ({
         weekday,
