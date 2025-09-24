@@ -41,6 +41,10 @@ const weekdays = [
   { weekday: 6, name: "Sábado" },
 ];
 
+const citiesOptions = [
+  { value: "São Paulo", label: "São Paulo" },
+];
+
 export function useCreateCourtController() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -78,6 +82,7 @@ export function useCreateCourtController() {
     handleSubmit: hookFormSubmit,
     register,
     formState: { errors },
+    control,
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -136,5 +141,7 @@ export function useCreateCourtController() {
     weekdays,
     isEditing,
     detailsData,
+    control,
+    citiesOptions,
   }
 }

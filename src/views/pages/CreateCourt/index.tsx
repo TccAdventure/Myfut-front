@@ -1,6 +1,9 @@
+import { Controller } from "react-hook-form";
+
 import { Button } from "@views/components/Button";
 import { GoBackButton } from "@views/components/GoBackButton";
 import { Input } from "@views/components/Input";
+import { Select } from "@views/components/Select";
 import { Switch } from "@views/components/Switch";
 import { useCreateCourtController } from "./useCreateCourtController";
 
@@ -13,6 +16,8 @@ export function CreateCourt() {
     isLoading,
     weekdays,
     isEditing,
+    control,
+    citiesOptions,
   } = useCreateCourtController();
 
   return (
@@ -47,10 +52,19 @@ export function CreateCourt() {
 
         <h2 className="text-xl font-bold">Endereço</h2>
 
-        <Input
-          placeholder="Cidade"
-          error={errors.address?.city?.message}
-          {...register('address.city')}
+        <Controller
+          control={control}
+          name="address.city"
+          defaultValue=""
+          render={({ field: { onChange, value } }) => (
+            <Select
+              placeholder="Cidade"
+              onChange={onChange}
+              value={value}
+              error={errors.address?.city?.message}
+              options={citiesOptions}
+            />
+          )}
         />
 
         <Input
