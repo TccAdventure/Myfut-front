@@ -1,10 +1,18 @@
 import { PersonIcon } from "@radix-ui/react-icons";
-import { Button } from "@views/components/Button";
-import { ChevronRight, PlusIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+
+// import { Spinner } from "@views/components/Spinner";
 import { useHomeController } from "./useHomeController";
 
 export function Home() {
-  const { courts, isFetching, isSuccess, handleLogout } = useHomeController();
+  const {
+    courts,
+    // isFetching,
+    // isSuccess,
+    goToProfile,
+  } = useHomeController();
+
+  console.log("home");
 
   // if (isFetching) {
   //   return <Spinner className="flex self-center" />;
@@ -16,17 +24,18 @@ export function Home() {
 
   return (
     <div className="h-screen">
-      <div className="flex flex-col h-full w-full max-w-[504px] px-8 lg:px-0 relative">
-
-        <div className="flex justify-between mt-4">
-          <button className="flex items-center justify-center h-12 w-12 bg-accent rounded-full cursor-pointer">
+      <div className="flex flex-col h-full w-full max-w-[504px] px-8 lg:px-0 relative py-8">
+        <div className="flex justify-between">
+          <button
+            className="flex items-center justify-center h-12 w-12 bg-accent rounded-full cursor-pointer"
+            onClick={goToProfile}
+          >
             <PersonIcon />
           </button>
-          <Button onClick={handleLogout}>Logout</Button>
         </div>
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-3xl my-4">Minhas quadras</h2>
+          <h2 className="text-3xl my-4">Na sua cidade</h2>
 
           {courts?.map((court) => (
             <div key={court.id} className="border-2 border-primary/30 rounded-md p-4">
@@ -41,13 +50,6 @@ export function Home() {
             </div>
           ))}
         </div>
-
-        <div className="absolute right-4 bottom-4">
-          <button className="flex items-center justify-center h-12 w-12 bg-primary rounded-full cursor-pointer">
-            <PlusIcon />
-          </button>
-        </div>
-
       </div>
     </div>
   );

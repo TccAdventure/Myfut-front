@@ -8,8 +8,8 @@ export function useCourtAdminHomeController() {
   const navigate = useNavigate();
 
   const { isError, isFetching, isSuccess, data } = useQuery({
-    queryKey: ['court', 'getAll'],
-    queryFn: () => courtAdminService.getAll(),
+    queryKey: ['courtAdmin', 'getAll'],
+    queryFn: courtAdminService.getAll,
     staleTime: Infinity,
   });
 
