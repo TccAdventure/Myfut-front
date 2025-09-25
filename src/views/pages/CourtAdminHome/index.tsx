@@ -9,7 +9,6 @@ export function CourtAdminHome() {
   const {
     courts,
     isFetching,
-    isSuccess,
     handleCreateCourt,
     goToProfile,
     goToCourtDetails,
@@ -19,7 +18,7 @@ export function CourtAdminHome() {
     return <Spinner className="flex self-center" />;
   }
 
-  if (!isSuccess || !courts) {
+  if (!courts) {
     return null;
   }
 

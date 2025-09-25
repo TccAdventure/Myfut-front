@@ -1,17 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
+import { useAdminCourts } from "@app/hooks/useAdminCourts";
 import { routes } from "@app/Router/routes";
-import { courtAdminService } from "@app/services/courtAdminService";
 
 export function useCourtAdminHomeController() {
   const navigate = useNavigate();
-
-  const { isError, isFetching, isSuccess, data } = useQuery({
-    queryKey: ['courtAdmin', 'getAll'],
-    queryFn: courtAdminService.getAll,
-    staleTime: Infinity,
-  });
+  const { courts, isFetching, } = useAdminCourts();
 
   function handleCreateCourt() {
     navigate(routes.createCourt);
@@ -26,10 +20,8 @@ export function useCourtAdminHomeController() {
   }
 
   return {
-    courts: data,
+    courts,
     isFetching,
-    isSuccess,
-    isError,
     handleCreateCourt,
     goToProfile,
     goToCourtDetails,
