@@ -12,8 +12,6 @@ export function Home() {
     goToProfile,
   } = useHomeController();
 
-  console.log("home");
-
   // if (isFetching) {
   //   return <Spinner className="flex self-center" />;
   // }
