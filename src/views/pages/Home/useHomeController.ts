@@ -23,7 +23,7 @@ export function useHomeController() {
 
   useEffect(() => {
     if (user?.role === 'COURT_ADMIN') {
-      navigate(routes.courtAdminHome);
+      navigate(routes.courtAdminHome, { replace: true });
     }
   }, [navigate, user?.role])
 
