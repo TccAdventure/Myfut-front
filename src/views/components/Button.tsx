@@ -15,7 +15,7 @@ export function Button({ className, isLoading, disabled, children, variant, ...p
       className={cn(
         'bg-primary hover:bg-primary/70 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400 px-6 h-12 rounded-2xl font-medium text-white transition-all flex items-center justify-center cursor-pointer',
         variant === 'danger' && 'bg-red-900 hover:bg-red-800',
-        variant === 'ghost' && 'bg-transparent border border-gray-800 text-gray-800 hover:bg-gray-800/5',
+        variant === 'ghost' && 'bg-transparent border border-gray-100 text-gray-100 hover:bg-gray-100/5',
         className,
       )}
     >

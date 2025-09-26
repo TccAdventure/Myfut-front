@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -46,6 +47,8 @@ const citiesOptions = [
 ];
 
 export function useCreateCourtController() {
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();
@@ -77,6 +80,8 @@ export function useCreateCourtController() {
       return courtId && courtAdminService.update(courtId, data);
     }
   });
+
+  const { mutateAsync: removeCourt, isPending: isDeleteLoading } = useMutation(courtAdminService.remove);
 
   const {
     handleSubmit: hookFormSubmit,
@@ -116,7 +121,7 @@ export function useCreateCourtController() {
         await createMutation(data);
       }
 
-      queryClient.invalidateQueries({ queryKey: ['court', 'getAll'] });
+      queryClient.invalidateQueries({ queryKey: ['courtAdmin', 'getAll'] });
 
       toast.success(`Quadra ${isEditing ? "editada" : "criada"} com sucesso!`);
 
@@ -128,20 +133,47 @@ export function useCreateCourtController() {
     }
   });
 
+  async function handleDelete() {
+    if (!courtId) return;
+
+    try {
+      await removeCourt(courtId);
+
+      queryClient.invalidateQueries({ queryKey: ['courtAdmin', 'getAll'] });
+      toast.success('A quadra foi deletada com sucesso!');
+      handleCloseDeleteModal();
+      navigate(routes.courtAdminHome, { replace: true });
+    } catch {
+      toast.error('Erro ao deletar a quadra!');
+    }
+  }
+
   function goBack() {
     navigate(-1);
+  }
+
+  function handleOpenDeleteModal() {
+    setIsConfirmDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsConfirmDeleteModalOpen(false);
   }
 
   return {
     register,
     handleSubmit,
     goBack,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleDelete,
     errors,
     isLoading: isCreateLoading || isUpdateLoading,
     weekdays,
     isEditing,
-    detailsData,
     control,
     citiesOptions,
+    isConfirmDeleteModalOpen,
+    isDeleteLoading,
   }
 }

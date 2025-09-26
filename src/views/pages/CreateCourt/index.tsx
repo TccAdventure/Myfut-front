@@ -1,10 +1,12 @@
 import { Controller } from "react-hook-form";
 
 import { Button } from "@views/components/Button";
+import { ConfirmDeleteModal } from "@views/components/ConfirmDeleteModal";
 import { GoBackButton } from "@views/components/GoBackButton";
 import { Input } from "@views/components/Input";
 import { Select } from "@views/components/Select";
 import { Switch } from "@views/components/Switch";
+import { TrashButton } from "@views/components/TrashButton";
 import { useCreateCourtController } from "./useCreateCourtController";
 
 export function CreateCourt() {
@@ -12,20 +14,37 @@ export function CreateCourt() {
     register,
     handleSubmit,
     goBack,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleDelete,
     errors,
     isLoading,
     weekdays,
     isEditing,
     control,
     citiesOptions,
+    isConfirmDeleteModalOpen,
+    isDeleteLoading,
   } = useCreateCourtController();
 
   return (
     <div className="flex flex-col py-8">
-      <div className="flex items-center gap-4">
-        <GoBackButton onClick={goBack} />
+      <ConfirmDeleteModal
+        open={isConfirmDeleteModalOpen}
+        isLoading={isDeleteLoading}
+        onConfirm={handleDelete}
+        onClose={handleCloseDeleteModal}
+        title="Tem certeza que deseja excluir esta quadra?"
+        description="Ao excluir a quadra, também serão excluídos todos os registros de disponibilidade e endereço relacionados."
+      />
 
-        <h1 className="text-2xl font-bold">{isEditing ? 'Editar' : 'Criar'} Quadra</h1>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <GoBackButton onClick={goBack} />
+
+          <h1 className="text-2xl font-bold">{isEditing ? 'Editar' : 'Criar'} Quadra</h1>
+        </div>
+        <TrashButton onClick={handleOpenDeleteModal} />
       </div>
 
       <form
