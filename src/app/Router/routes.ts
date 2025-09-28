@@ -6,4 +6,5 @@ export const routes = {
   courtAdminHome: '/court-admin-home',
   createCourt: '/create-court',
   profile: '/profile',
+  courtDetails: '/court-details',
 }

@@ -1,24 +1,24 @@
 import { PersonIcon } from "@radix-ui/react-icons";
 import { ChevronRight } from "lucide-react";
 
-// import { Spinner } from "@views/components/Spinner";
+import { Spinner } from "@views/components/Spinner";
 import { useHomeController } from "./useHomeController";
 
 export function Home() {
   const {
     courts,
-    // isFetching,
-    // isSuccess,
+    isFetching,
     goToProfile,
+    goToCourtDetails,
   } = useHomeController();
 
-  // if (isFetching) {
-  //   return <Spinner className="flex self-center" />;
-  // }
+  if (isFetching) {
+    return <Spinner className="flex self-center" />;
+  }
 
-  // if (!isSuccess || !courts) {
-  //   return null;
-  // }
+  if (!courts) {
+    return <p>Ocorreu um erro ao buscar as quadras disponíveis</p>;
+  }
 
   return (
     <div className="h-screen">
@@ -35,15 +35,20 @@ export function Home() {
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl my-4">Na sua cidade</h2>
 
+          {courts.length === 0 && (
+            <h2 className="text-2xl bold">Nenhuma quadra encontrada!</h2>
+          )}
           {courts?.map((court) => (
-            <div key={court.id} className="border-2 border-primary/30 rounded-md p-4">
+            <div
+              key={court.id}
+              className="border-2 border-primary/30 rounded-md p-4 cursor-pointer"
+              onClick={() => goToCourtDetails(court.id)}
+            >
               <h2 className="text-2xl bold">{court.name}</h2>
 
               <div className="flex justify-between mt-2">
                 <p>{court.description}</p>
-                <button className="cursor-pointer">
-                  <ChevronRight />
-                </button>
+                <ChevronRight />
               </div>
             </div>
           ))}
