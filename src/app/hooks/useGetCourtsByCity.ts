@@ -1,5 +1,6 @@
-import { courtService } from "@app/services/courtService";
 import { useQuery } from "@tanstack/react-query";
+
+import { courtService } from "@app/services/courtService";
 
 export function useGetCourtsByCity() {
   const { data, isFetching } = useQuery({
