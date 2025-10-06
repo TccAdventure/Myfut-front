@@ -1,4 +1,4 @@
-import type { UUID } from "node:crypto";
+import type { UUID } from 'node:crypto';
 
 export interface Court {
   id: UUID;
@@ -29,4 +29,11 @@ export interface CourtDetails extends Court {
     endTime: string;
     isActive: boolean;
   }[];
+  schedules: {
+    id: UUID;
+    state: ScheduleState;
+    date: Date;
+  }[];
 }
+
+export type ScheduleState = "PENDING" | "ACCEPTED" | "CANCELLED";
