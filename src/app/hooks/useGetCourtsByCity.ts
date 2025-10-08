@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 
+import type { AvailableCities } from "@app/constants/availableCities";
 import { courtService } from "@app/services/courtService";
 
-export function useGetCourtsByCity() {
+interface IGetCourtsByCityParams {
+  city?: AvailableCities
+}
+
+export function useGetCourtsByCity({ city }: IGetCourtsByCityParams) {
   const { data, isFetching } = useQuery({
-    queryKey: ['court', 'getByCity'],
+    queryKey: ['court', 'getByCity', city],
     queryFn: async () => {
-      return await courtService.getByCity("São Paulo");
+      if (!city) return null;
+
+      return await courtService.getByCity(city);
     },
     staleTime: Infinity,
+    enabled: !!city,
   });
 
   return { courts: data ?? [], isFetching };

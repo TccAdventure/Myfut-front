@@ -39,7 +39,7 @@ export function Select({ className, placeholder, options, error, onChange, value
         <RdxSelect.Root value={value} onValueChange={handleSelect}>
           <RdxSelect.Trigger
             className={cn(
-              'bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-800 focus:border-gray-800 transition-all outline-none text-left relative pt-4',
+              'bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-800 focus:border-gray-800 transition-all outline-none text-left relative pt-4 cursor-pointer',
               error && '!border-red-900',
               className,
             )}
@@ -64,7 +64,7 @@ export function Select({ className, placeholder, options, error, onChange, value
                   <RdxSelect.Item
                     key={option.value}
                     value={option.value}
-                    className="p-2 text-gray-800 text-sm data-[state=checked]:font-bold outline-none data-[highlighted]:bg-gray-50 rounded-lg transition-colors"
+                    className="p-2 text-gray-800 text-sm data-[state=checked]:font-bold outline-none data-[highlighted]:bg-gray-50 rounded-lg transition-colors cursor-pointer"
                   >
                     <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
                   </RdxSelect.Item>
