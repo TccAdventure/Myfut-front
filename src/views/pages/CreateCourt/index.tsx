@@ -11,20 +11,20 @@ import { useCreateCourtController } from "./useCreateCourtController";
 
 export function CreateCourt() {
   const {
+    errors,
+    isLoading,
+    weekdays,
+    isEditing,
+    control,
+    availableCitiesOptions,
+    isConfirmDeleteModalOpen,
+    isDeleteLoading,
     register,
     handleSubmit,
     goBack,
     handleOpenDeleteModal,
     handleCloseDeleteModal,
     handleDelete,
-    errors,
-    isLoading,
-    weekdays,
-    isEditing,
-    control,
-    citiesOptions,
-    isConfirmDeleteModalOpen,
-    isDeleteLoading,
   } = useCreateCourtController();
 
   return (
@@ -81,7 +81,7 @@ export function CreateCourt() {
               onChange={onChange}
               value={value}
               error={errors.address?.city?.message}
-              options={citiesOptions}
+              options={availableCitiesOptions}
             />
           )}
         />

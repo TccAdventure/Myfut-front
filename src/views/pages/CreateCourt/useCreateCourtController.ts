@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 
+import { availableCities } from "@app/constants/availableCities";
 import { routes } from "@app/Router/routes";
 import { courtAdminService } from "@app/services/courtAdminService";
 import type { CreateCourtBody } from "@app/services/courtAdminService/create";
@@ -42,10 +43,6 @@ const weekdays = [
   { weekday: 6, name: "Sábado" },
 ];
 
-const citiesOptions = [
-  { value: "São Paulo", label: "São Paulo" },
-];
-
 export function useCreateCourtController() {
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
@@ -55,6 +52,13 @@ export function useCreateCourtController() {
 
   const courtId = params?.courtId;
   const isEditing = !!courtId;
+
+  const availableCitiesOptions = useMemo(() => {
+    return availableCities.map((city) => ({
+      value: city,
+      label: city,
+    }));
+  }, []);
 
   const { data: detailsData } = useQuery({
     queryKey: ["courts", courtId],
@@ -161,19 +165,19 @@ export function useCreateCourtController() {
   }
 
   return {
+    errors,
+    isLoading: isCreateLoading || isUpdateLoading,
+    weekdays,
+    isEditing,
+    control,
+    isConfirmDeleteModalOpen,
+    isDeleteLoading,
+    availableCitiesOptions,
     register,
     handleSubmit,
     goBack,
     handleOpenDeleteModal,
     handleCloseDeleteModal,
     handleDelete,
-    errors,
-    isLoading: isCreateLoading || isUpdateLoading,
-    weekdays,
-    isEditing,
-    control,
-    citiesOptions,
-    isConfirmDeleteModalOpen,
-    isDeleteLoading,
   }
 }
