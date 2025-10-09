@@ -3,6 +3,7 @@ import { getAll } from "./getAll";
 import { getById } from "./getById";
 import { remove } from "./remove";
 import { update } from "./update";
+import { uploadFile } from "./uploadImage";
 
 export const courtAdminService = {
   getAll,
@@ -10,4 +11,5 @@ export const courtAdminService = {
   getById,
   update,
   remove,
+  uploadFile,
 };

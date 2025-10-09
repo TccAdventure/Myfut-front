@@ -45,6 +45,7 @@ const weekdays = [
 
 export function useCreateCourtController() {
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | undefined>();
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -85,7 +86,9 @@ export function useCreateCourtController() {
     }
   });
 
-  const { mutateAsync: removeCourt, isPending: isDeleteLoading } = useMutation(courtAdminService.remove);
+  const { mutateAsync: removeCourtMutation, isPending: isDeleteLoading } = useMutation(courtAdminService.remove);
+
+  const { mutateAsync: uploadImageMutation, isPending: isUploadLoading } = useMutation(courtAdminService.uploadFile);
 
   const {
     handleSubmit: hookFormSubmit,
@@ -107,7 +110,7 @@ export function useCreateCourtController() {
         street: detailsData?.courtAddress.street ?? "",
         number: detailsData?.courtAddress.number ?? "" as unknown as number,
       },
-      availabilities: detailsData?.courtAvailability?.sort((a, b) => a.weekday - b.weekday )?.map(({ weekday, startTime, endTime, isActive }) => ({
+      availabilities: detailsData?.courtAvailability?.sort((a, b) => a.weekday - b.weekday)?.map(({ weekday, startTime, endTime, isActive }) => ({
         weekday,
         startTime,
         endTime,
@@ -120,9 +123,22 @@ export function useCreateCourtController() {
     try {
       if (isEditing) {
         await updateMutation(data);
+
+        if (courtId && selectedImage) {
+          const formData = new FormData();
+          formData.append('file', selectedImage)
+          await uploadImageMutation({ courtId, body: formData});
+        }
+
         queryClient.invalidateQueries({ queryKey: ['courts', courtId] });
       } else {
-        await createMutation(data);
+        const { id } = await createMutation(data);
+
+        if (id && selectedImage) {
+          const formData = new FormData();
+          formData.append('file', selectedImage)
+          await uploadImageMutation({ courtId: id, body: formData });
+        }
       }
 
       queryClient.invalidateQueries({ queryKey: ['courtAdmin', 'getAll'] });
@@ -141,7 +157,7 @@ export function useCreateCourtController() {
     if (!courtId) return;
 
     try {
-      await removeCourt(courtId);
+      await removeCourtMutation(courtId);
 
       queryClient.invalidateQueries({ queryKey: ['courtAdmin', 'getAll'] });
       toast.success('A quadra foi deletada com sucesso!');
@@ -164,6 +180,10 @@ export function useCreateCourtController() {
     setIsConfirmDeleteModalOpen(false);
   }
 
+  function handleFileChange(image?: File) {
+    setSelectedImage(image);
+  }
+
   return {
     errors,
     isLoading: isCreateLoading || isUpdateLoading,
@@ -172,6 +192,7 @@ export function useCreateCourtController() {
     control,
     isConfirmDeleteModalOpen,
     isDeleteLoading,
+    isUploadLoading,
     availableCitiesOptions,
     register,
     handleSubmit,
@@ -179,5 +200,6 @@ export function useCreateCourtController() {
     handleOpenDeleteModal,
     handleCloseDeleteModal,
     handleDelete,
+    handleFileChange,
   }
 }

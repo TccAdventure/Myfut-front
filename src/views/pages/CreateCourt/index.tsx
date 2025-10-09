@@ -25,6 +25,7 @@ export function CreateCourt() {
     handleOpenDeleteModal,
     handleCloseDeleteModal,
     handleDelete,
+    handleFileChange,
   } = useCreateCourtController();
 
   return (
@@ -67,6 +68,14 @@ export function CreateCourt() {
           placeholder="Link do Google Maps"
           error={errors.linkToGoogleMaps?.message}
           {...register('linkToGoogleMaps')}
+        />
+
+        <Input
+          name="image"
+          placeholder="Imagem"
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={(event) => handleFileChange(event.target.files?.[0])}
         />
 
         <h2 className="text-xl font-bold">Endereço</h2>
