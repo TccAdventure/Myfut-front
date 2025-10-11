@@ -57,14 +57,23 @@ export function Home() {
           {courts?.map((court) => (
             <div
               key={court.id}
-              className="border-2 border-primary/30 rounded-md p-4 cursor-pointer"
+              className="border-2 border-neutral-800 rounded-md cursor-pointer"
               onClick={() => goToCourtDetails(court.id)}
             >
-              <h2 className="text-2xl bold">{court.name}</h2>
+              {court.imageUrl && (
+                <img
+                  className="rounded-tl-md rounded-tr-md h-[300px] w-[100%] object-cover border-b-2 border-neutral-800"
+                  src={`${import.meta.env.VITE_API_URL}/${court.imageUrl}`}
+                />
+              )}
 
-              <div className="flex justify-between mt-2">
-                <p>{court.description}</p>
-                <ChevronRight />
+              <div className="p-4">
+                <h2 className="text-2xl bold">{court.name}</h2>
+
+                <div className="flex justify-between mt-2">
+                  <p>{court.description}</p>
+                  <ChevronRight />
+                </div>
               </div>
             </div>
           ))}
